@@ -1,0 +1,130 @@
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: rgb(195, 221, 223);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.weatherForm {
+    margin: 30px;
+}
+
+.cityInput {
+    padding: 10px;
+    font-size: 1.75rem;
+    font-weight: bold;
+    border: 2px solid rgb(75, 134, 165);
+    border-radius: 20px;
+    margin: 10px;
+    width: 300px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 1.75rem;
+    background-color: rgba(178, 224, 79, 0.792);
+    color: rgb(11, 52, 6);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(63, 218, 63);
+}
+
+.card {
+    background: linear-gradient(rgb(79, 201, 214), rgb(107, 211, 103));
+    padding: 10px 20px;
+    box-shadow: 2px 2px 5px rgb(51, 166, 201);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    border-radius: 15px;
+}
+
+p {
+    font-size: 1.5rem;
+    margin: 7.5px 0px;
+}
+
+.cityDisplay, .tempDisplay {
+    font-size: 3rem;
+    font-weight: bolder;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgba(19, 16, 16, 0.813);
+    margin-bottom: 20px;
+}
+
+.humidityDisplay {
+    font-weight: bolder;
+    margin-bottom: 20px;
+    color: rgb(28, 22, 97);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.descDisplay {
+    font-style: italic;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.weatherEmoji {
+    margin: 0;
+    font-size: 5rem;
+}
+
+.errorDisplay {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: rgba(23, 9, 9, 0.61);
+}
+
+/* Styles for search history */
+.search-history {
+    margin-top: 20px;
+    width: 100%; /* Make it responsive within the card */
+    text-align: center; /* Center the text */
+}
+
+.search-history h2 {
+    margin: 10px 0;
+}
+
+.clear-history {
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.clear-history:hover {
+    background-color: rgba(255, 0, 0, 1);
+}
+
+.history-list {
+    margin-top: 10px;
+    width: 100%; /* Make it responsive */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the history items */
+}
+
+.history-list p {
+    margin: 5px 0;
+    cursor: pointer; /* Indicate that the items are clickable */
+    color: rgb(11, 52, 6);
+}
+
+.history-list p:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
+}

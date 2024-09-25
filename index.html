@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form class="weatherForm">
+        <input type="text" class="cityInput" placeholder="Enter city">
+        <button type="submit">Get Weather</button>
+    </form>
+    <div class="card" style="display: none;">
+        <div class="search-history">
+            <h2>Search History</h2>
+            <button class="clear-history">Clear History</button>
+            <div class="history-list"></div> <!-- New container for history items -->
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
