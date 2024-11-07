@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather app</title>
+    <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,13 +11,27 @@
         <input type="text" class="cityInput" placeholder="Enter city">
         <button type="submit">Get Weather</button>
     </form>
+
+    <!-- The card will hold the weather data (visible after weather is fetched) -->
     <div class="card" style="display: none;">
+        <div class="weather-info">
+            <h2 class="cityDisplay"></h2>
+            <p class="tempDisplay">
+                <span class="tempValue"></span> 
+                <button id="unit-toggle" style="display: none;">°C</button>
+            </p>
+            <p class="humidityDisplay"></p>
+            <p class="descDisplay"></p>
+            <p class="weatherEmoji"></p>
+        </div>
+        
         <div class="search-history">
             <h2>Search History</h2>
             <button class="clear-history">Clear History</button>
-            <div class="history-list"></div> <!-- New container for history items -->
+            <div class="history-list"></div>
         </div>
     </div>
+
     <script src="index.js"></script>
 </body>
 </html>
