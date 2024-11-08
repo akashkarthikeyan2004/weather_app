@@ -4,6 +4,7 @@ const card = document.querySelector(".card");
 const historyList = document.querySelector(".history-list");
 const apiKey = "a10703c4498ecba30f1f7e2bde495c0c";
 const searchHistory = []; // Array to store search history
+let unit = 'metric';  // Default unit is Celsius
 
 weatherForm.addEventListener("submit", async event => {
     event.preventDefault();
@@ -23,9 +24,9 @@ weatherForm.addEventListener("submit", async event => {
     }
 });
 
-// Function to fetch weather data
+// Fetch weather data based on city and unit
 async function getWeatherData(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${unit}&appid=${apiKey}`;
     const response = await fetch(apiUrl);
 
     if (!response.ok) {
@@ -35,12 +36,33 @@ async function getWeatherData(city) {
     return await response.json();
 }
 
-// Function to display weather information
+// Display weather data including the toggle button
 function displayWeatherInfo(data) {
     const { name: city, main: { temp, humidity }, weather: [{ description, id }] } = data;
 
-    // Change background color based on weather
-    document.body.style.backgroundColor = getBackgroundColor(id);
+
+    
+    
+    // Log the raw data to debug
+    console.log(`Raw temp value from API: ${temp}`); // Check the temperature returned
+
+    // Adjust temperature based on the selected unit
+    let temperature;
+    if (unit === 'metric') {
+        temperature = temp; // Celsius
+    } else if (unit === 'imperial') {
+        // Convert Celsius to Fahrenheit
+        temperature = temp;
+    }
+
+    // Log temperature before and after conversion
+    console.log(`Temperature in ${unit === 'metric' ? 'Celsius' : 'Fahrenheit'}: ${temperature}`);
+
+    const unitSymbol = unit === 'metric' ? '°C' : '°F'; // Update unit symbol
+
+    // Update background color based on weather conditions
+    const backgroundImage = getBackgroundImage(id);
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
 
     card.textContent = "";
     card.style.display = "flex";
@@ -50,83 +72,107 @@ function displayWeatherInfo(data) {
     const humidityDisplay = document.createElement("p");
     const descDisplay = document.createElement("p");
     const weatherEmoji = document.createElement("p");
+    const unitToggleButton = document.createElement("button");
+    const tempValue = document.createElement("span");
 
+    // Set the elements' content
     cityDisplay.textContent = city;
-    tempDisplay.textContent = `${(temp - 273.15).toFixed(1)}°C`;
+    tempValue.textContent = `${temperature.toFixed(1)}`; // Display only the number
     humidityDisplay.textContent = `Humidity: ${humidity}%`;
     descDisplay.textContent = description;
     weatherEmoji.textContent = getWeatherEmoji(id);
 
+    // Set classes for styling
     cityDisplay.classList.add("cityDisplay");
     tempDisplay.classList.add("tempDisplay");
     humidityDisplay.classList.add("humidityDisplay");
     descDisplay.classList.add("descDisplay");
     weatherEmoji.classList.add("weatherEmoji");
 
+    // Set properties for unit toggle button
+    unitToggleButton.textContent = unitSymbol;
+    unitToggleButton.id = "unit-toggle";
+    unitToggleButton.style.fontSize = "1.5rem";
+    unitToggleButton.style.marginLeft = "10px";
+    unitToggleButton.style.backgroundColor = "transparent";
+    unitToggleButton.style.border = "none";
+    unitToggleButton.style.cursor = "pointer";
+    unitToggleButton.style.fontWeight = "bold";
+    unitToggleButton.style.display = "inline-block";
+
+    // Append elements to the card
     card.appendChild(cityDisplay);
     card.appendChild(tempDisplay);
+    tempDisplay.appendChild(tempValue); // Append tempValue inside tempDisplay
+    tempDisplay.appendChild(unitToggleButton); // Append the unit toggle button to the tempDisplay
     card.appendChild(humidityDisplay);
     card.appendChild(descDisplay);
     card.appendChild(weatherEmoji);
 
-    renderSearchHistory(); // Ensure the search history is updated when new weather data is displayed
+    // Show unit toggle button
+    unitToggleButton.style.display = "inline-block"; // Show the toggle button
+    unitToggleButton.textContent = unitSymbol; // Set the text to °C or °F
+
+    // Set up unit toggle button click event
+    unitToggleButton.addEventListener("click", () => {
+        unit = (unit === 'metric') ? 'imperial' : 'metric';  // Toggle between metric and imperial
+        weatherForm.dispatchEvent(new Event('submit')); // Re-fetch the weather with the new unit
+    });
+
+    renderSearchHistory(); // Update search history
 }
 
-// Function to get background color based on weather ID
-function getBackgroundColor(weatherId) {
+// Function to update the background color based on weather ID
+function getBackgroundImage(weatherId) {
     switch (true) {
         case (weatherId >= 200 && weatherId < 300): // Thunderstorm
-            return "rgba(85, 85, 255, 0.5)"; // Light blue
+            return "https://media.tenor.com/lgmjVuwYvg0AAAAM/lightning-amrzlak.gif";
         case (weatherId >= 300 && weatherId < 400): // Drizzle
-            return "rgba(173, 216, 230, 0.5)"; // Light sky blue
+            return "https://media.tenor.com/ixUbTxnyD2wAAAAM/damla-dropping.gif";
         case (weatherId >= 500 && weatherId < 600): // Rain
-            return "rgba(0, 0, 255, 0.5)"; // Blue
+            return "https://media.tenor.com/lgr0Fu9YaVoAAAAM/rain-raining.gif";
         case (weatherId >= 600 && weatherId < 700): // Snow
-            return "rgba(255, 250, 250, 0.5)"; // Snow white
-        case (weatherId >= 700 && weatherId < 800): // Atmosphere (fog, mist)
-            return "rgba(169, 169, 169, 0.5)"; // Dark gray
+            return "https://media.tenor.com/f6Z_JUiELaMAAAAM/winter-wonderland-snow.gif";
+        case (weatherId >= 700 && weatherId < 800): // Atmosphere
+            return "https://media.tenor.com/FbfaY520cmYAAAAM/man-lamp.gif";
         case (weatherId === 800): // Clear
-            return "rgba(255, 223, 186, 0.5)"; // Light orange
+            return "https://media.tenor.com/cFzBp-_fBpIAAAAM/bright-morning.gif";
         case (weatherId >= 801 && weatherId < 810): // Clouds
-            return "rgba(211, 211, 211, 0.5)"; // Light gray
+            return "https://media.tenor.com/XgfA8QKdOV4AAAAM/rain-clouds.gif";
         default:
-            return "rgba(195, 221, 223, 0.5)"; // Default grayish background
+            return "https://media1.tenor.com/m/z1AfgE4WbZkAAAAd/happy-bbg.gif";
     }
 }
 
-// Function to update search history
+// Render search history
+function renderSearchHistory() {
+    historyList.innerHTML = ""; // Clear previous history
+    searchHistory.forEach(city => {
+        const historyItem = document.createElement("p");
+        historyItem.textContent = city;
+        historyItem.addEventListener("click", () => {
+            cityInput.value = city;
+            weatherForm.dispatchEvent(new Event('submit')); // Trigger form submit with the selected city
+        });
+        historyList.appendChild(historyItem);
+    });
+}
+
+// Update search history
 function updateSearchHistory(city) {
-    // Avoid duplicates in history
     if (!searchHistory.includes(city)) {
         searchHistory.push(city);
         renderSearchHistory();
     }
 }
 
-// Function to render search history
-function renderSearchHistory() {
-    historyList.innerHTML = ""; // Clear previous history
-    searchHistory.forEach(city => {
-        const historyItem = document.createElement("p");
-        historyItem.textContent = city;
-
-        // Add click event to fetch weather for this city
-        historyItem.addEventListener("click", () => {
-            cityInput.value = city;
-            weatherForm.dispatchEvent(new Event('submit')); // Trigger the submit event
-        });
-
-        historyList.appendChild(historyItem);
-    });
-}
-
-// Function to clear search history
+// Clear search history
 document.querySelector(".clear-history").addEventListener("click", () => {
-    searchHistory.length = 0; // Clear the array
-    historyList.innerHTML = ""; // Clear the display
+    searchHistory.length = 0;
+    historyList.innerHTML = "";
 });
 
-// Function to get weather emoji
+// Weather emoji based on weather condition ID
 function getWeatherEmoji(weatherId) {
     switch (true) {
         case (weatherId >= 200 && weatherId < 300):
@@ -148,13 +194,17 @@ function getWeatherEmoji(weatherId) {
     }
 }
 
-// Function to display error message
+// Display error message
 function displayError(message) {
     const errorDisplay = document.createElement("p");
     errorDisplay.textContent = message;
     errorDisplay.classList.add("errorDisplay");
-
     card.textContent = "";
     card.style.display = "flex";
     card.appendChild(errorDisplay);
+}
+function convertCelsiusToFahrenheit(celsius) {
+    const fahrenheit = (celsius * 9 / 5) + 32;
+    console.log("Converted Fahrenheit:", fahrenheit); // Log the Fahrenheit conversion
+    return fahrenheit;
 }
