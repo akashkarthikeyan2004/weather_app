@@ -1,11 +1,13 @@
 body {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    background-color: rgb(195, 221, 223);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+
+  }
 
 .weatherForm {
     margin: 30px;
@@ -128,3 +130,26 @@ p {
 .history-list p:hover {
     text-decoration: underline; /* Underline on hover for better UX */
 }
+/* General button styling */
+/* General button styling */
+/* The rest of your existing CSS */
+
+/* Position the unit toggle button next to the temperature */
+#unit-toggle {
+    font-size: 1.5rem;
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#unit-toggle:hover {
+    color: #007BFF;
+}
+
+/* ... other CSS styles */
+
+
+  
+ 
