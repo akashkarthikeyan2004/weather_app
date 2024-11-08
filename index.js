@@ -126,38 +126,42 @@ function displayWeatherInfo(data) {
 function getBackgroundImage(weatherId) {
     switch (true) {
         case (weatherId >= 200 && weatherId < 300): // Thunderstorm
-            return "https://media.tenor.com/lgmjVuwYvg0AAAAM/lightning-amrzlak.gif";
+            return "https://media.tenor.com/jSVVsppRT-MAAAAM/rain-lightning.gif";
         case (weatherId >= 300 && weatherId < 400): // Drizzle
-            return "https://media.tenor.com/ixUbTxnyD2wAAAAM/damla-dropping.gif";
+            return "https://media.tenor.com/SV4ppzqpVtIAAAAM/anime-rain.gif";
         case (weatherId >= 500 && weatherId < 600): // Rain
-            return "https://media.tenor.com/lgr0Fu9YaVoAAAAM/rain-raining.gif";
+            return "https://media.tenor.com/GeiuKcl9VxIAAAAM/coffee.gif";
         case (weatherId >= 600 && weatherId < 700): // Snow
             return "https://media.tenor.com/f6Z_JUiELaMAAAAM/winter-wonderland-snow.gif";
         case (weatherId >= 700 && weatherId < 800): // Atmosphere
-            return "https://media.tenor.com/FbfaY520cmYAAAAM/man-lamp.gif";
+            return "https://media.tenor.com/5ImWLS5QAJgAAAAM/foggy-fog.gif";
         case (weatherId === 800): // Clear
-            return "https://media.tenor.com/cFzBp-_fBpIAAAAM/bright-morning.gif";
+            return "https://media.tenor.com/4IkfSV_2jxQAAAAM/sky-sun.gifhttps://media.tenor.com/4IkfSV_2jxQAAAAM/sky-sun.gif";
         case (weatherId >= 801 && weatherId < 810): // Clouds
-            return "https://media.tenor.com/XgfA8QKdOV4AAAAM/rain-clouds.gif";
+            return "https://media.tenor.com/tQWmGFB9_SYAAAAM/moving-clouds-world-meteorological-day.gif";
         default:
-            return "https://media1.tenor.com/m/z1AfgE4WbZkAAAAd/happy-bbg.gif";
+            return "";
     }
 }
 
 // Render search history
 function renderSearchHistory() {
     historyList.innerHTML = ""; // Clear previous history
-    searchHistory.forEach(city => {
-        const historyItem = document.createElement("p");
-        historyItem.textContent = city;
-        historyItem.addEventListener("click", () => {
-            cityInput.value = city;
-            weatherForm.dispatchEvent(new Event('submit')); // Trigger form submit with the selected city
-        });
-        historyList.appendChild(historyItem);
-    });
-}
 
+    if (searchHistory.length > 0) {
+        searchHistory.forEach(city => {
+            const historyItem = document.createElement("p");
+            historyItem.textContent = city;
+            historyItem.addEventListener("click", () => {
+                cityInput.value = city;
+                weatherForm.dispatchEvent(new Event('submit'));
+            });
+            historyList.appendChild(historyItem);
+        });
+    } else {
+        historyList.textContent = "No search history yet.";
+    }
+}
 // Update search history
 function updateSearchHistory(city) {
     if (!searchHistory.includes(city)) {
